@@ -11,13 +11,14 @@ class DashboardScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppTheme.primary,
         title: const Text("Login"),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.popAndPushNamed(
-                    context, AppRoutes.menuOption[0].route);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.menuOption[0].route, (_) => false);
               },
               icon: const Icon(Icons.login))
         ],

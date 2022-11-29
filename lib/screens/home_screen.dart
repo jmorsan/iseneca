@@ -47,6 +47,7 @@ class Login extends StatelessWidget {
   final UsersProvider usersProvider;
 
   void comprobarUsuario(BuildContext context) {
+    bool display = true;
     print('Comprobamos usuario');
 
     final usuarios = usersProvider
@@ -66,12 +67,52 @@ class Login extends StatelessWidget {
 
       if (user.usuario == formValues['usuario'] &&
           user.clave == formValues['clave']) {
+        display = false;
         print('Estamos en el if');
 
         Navigator.pushNamed(context, AppRoutes.menuOption[1].route,
             arguments: formValues['usuario']);
       }
     });
+    if (display) {
+      displayDialogAndroid(context);
+    }
+  }
+
+  // Ventana pop -> Contraseña o usuario incorrectos
+  void displayDialogAndroid(BuildContext context) {
+    showDialog(
+        barrierDismissible:
+            true, // al crear la alerta si pulsas detras se quita o no
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(15)),
+            elevation: 5,
+            title: const Text(
+              'ERROR',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Column(mainAxisSize: MainAxisSize.min, children: const [
+              Text('Contraseña o Usuario icorrectos'),
+              SizedBox(height: 25),
+              Icon(
+                Icons.heart_broken,
+                size: 75,
+                color: Colors.red,
+              ),
+            ]),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.menuOption[0].route, (_) => false),
+                child: const Text('OK'),
+              )
+            ],
+          );
+        });
   }
 
   @override
