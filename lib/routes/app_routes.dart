@@ -11,7 +11,9 @@ class AppRoutes {
         route: 'home',
         icon: Icons.home,
         name: 'Home Screen',
-        screen: const HomeScreen()),
+        screen: const HomeScreen(
+          failAcces: true,
+        )),
     MenuOption(
         route: 'menu',
         icon: Icons.home,
@@ -21,7 +23,11 @@ class AppRoutes {
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
     Map<String, Widget Function(BuildContext)> appRoutes = {};
-    appRoutes.addAll({'home': (BuildContext context) => const HomeScreen()});
+    appRoutes.addAll({
+      'home': (BuildContext context) => const HomeScreen(
+            failAcces: true,
+          )
+    });
 
     for (final option in menuOption) {
       appRoutes.addAll({option.route: (BuildContext context) => option.screen});
@@ -31,6 +37,9 @@ class AppRoutes {
   }
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (context) => const HomeScreen());
+    return MaterialPageRoute(
+        builder: (context) => const HomeScreen(
+              failAcces: true,
+            ));
   }
 }

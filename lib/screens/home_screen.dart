@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.failAcces}) : super(key: key);
+  final bool failAcces;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class HomeScreen extends StatelessWidget {
           myFormKey: myFormKey,
           formValues: formValues,
           usersProvider: usersProvider,
-        )
+          failAcess: failAcces,
+        ),
       ]),
     );
   }
@@ -40,44 +42,13 @@ class Login extends StatelessWidget {
     required this.myFormKey,
     required this.formValues,
     required this.usersProvider,
+    required this.failAcess,
   }) : super(key: key);
 
   final GlobalKey<FormState> myFormKey;
   final Map<String, String> formValues;
   final UsersProvider usersProvider;
-
-  void comprobarUsuario(BuildContext context) {
-    bool display = true;
-    print('Comprobamos usuario');
-
-    final usuarios = usersProvider
-        .usersList; //usuariosProvider lo hemos definido como atributo.
-
-    print("${usuarios.length} <- Longitud de la lista");
-    print("${usuarios.toString()} <- toString de la lista");
-
-    usuarios.forEach((user) {
-      print("---------------------------------------------------------");
-      print('${formValues['usuario']} Esto es El usuario del mapa');
-      print('${formValues['clave']} Esto es La clave del mapa');
-
-      print('${user.usuario} Esto el es usuario de la lista');
-      print('${user.clave} Esto la contraseña de la lista');
-      print("---------------------------------------------------------");
-
-      if (user.usuario == formValues['usuario'] &&
-          user.clave == formValues['clave']) {
-        display = false;
-        print('Estamos en el if');
-
-        Navigator.pushNamed(context, AppRoutes.menuOption[1].route,
-            arguments: formValues['usuario']);
-      }
-    });
-    if (display) {
-      displayDialogAndroid(context);
-    }
-  }
+  final bool failAcess;
 
   // Ventana pop -> Contraseña o usuario incorrectos
   void displayDialogAndroid(BuildContext context) {
@@ -106,8 +77,12 @@ class Login extends StatelessWidget {
             ]),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                    context, AppRoutes.menuOption[0].route, (_) => false),
+                onPressed: () => Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HomeScreen(failAcces: true)),
+                    (route) => false),
                 child: const Text('OK'),
               )
             ],
@@ -117,6 +92,12 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!failAcess) {
+      Future.delayed(Duration.zero, () {
+        displayDialogAndroid(context);
+      });
+    }
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -155,9 +136,11 @@ class Login extends StatelessWidget {
                         style: TextStyle(color: AppTheme.primary, fontSize: 30),
                       ),
                     )),
-                onPressed: () {
-                  comprobarUsuario(context);
-                },
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.menuOption[1].route,
+                    arguments: formValues,
+                    (_) => false),
               ),
               const SizedBox(height: 200),
               const Image(

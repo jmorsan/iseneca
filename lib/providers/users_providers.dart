@@ -7,11 +7,7 @@ import 'package:http/http.dart' as http;
 class UsersProvider extends ChangeNotifier {
   List<User> usersList = [];
 
-  UsersProvider() {
-    _getJsonData();
-  }
-
-  Future<List<User>> _getJsonData() async {
+  Future<List<User>> getJsonData() async {
     var url = Uri.parse(
         'https://script.google.com/macros/s/AKfycbyaPGHuEiF44vS-ql_RY7MbNVMDFRgwnvRjTu-aY4AhVhstT2CxMb7h3Z3Ljo8BAGhk/exec?spreadsheetId=1yF7DcKywQ3iGa37RoV47WJGLhoTjezQD8H3fjcoHUKo&sheet=usuarios');
 
