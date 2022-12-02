@@ -63,7 +63,7 @@ class DashboardScreen extends StatelessWidget {
       body: Column(children: [
         const SizedBox(height: 30),
         const Image(
-          image: AssetImage('assets/iseneca_azul.png'),
+          image: AssetImage('assets/iseneca .png'),
           width: double.infinity,
           height: 150,
           fit: BoxFit.cover,

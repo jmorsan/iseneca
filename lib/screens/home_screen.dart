@@ -90,6 +90,46 @@ class Login extends StatelessWidget {
         });
   }
 
+  // Ventana pop -> No recuerdo la contraseña
+  void recuperarPassword(BuildContext context) {
+    showDialog(
+        barrierDismissible:
+            true, // al crear la alerta si pulsas detras se quita o no
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(15)),
+            elevation: 5,
+            title: const Text(
+              'RECUPERAR CONTRASEÑA',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Column(mainAxisSize: MainAxisSize.min, children: const [
+              Text('Contacte con soporte'),
+              SizedBox(height: 25),
+              Icon(
+                Icons.support_agent, 
+                size: 75,
+                color: Colors.white,
+              ),
+            ]),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HomeScreen(failAcces: true)),
+                    (route) => false),
+                child: const Text('OK'),
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!failAcess) {
@@ -105,14 +145,14 @@ class Login extends StatelessWidget {
           key: myFormKey,
           child: Column(
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 100),
               const Image(
                 image: AssetImage('assets/iseneca .png'),
                 width: double.infinity,
                 height: 150,
                 fit: BoxFit.cover,
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 30),
               CustomInputField(
                   formProperty: 'usuario',
                   formValues: formValues,
@@ -132,7 +172,7 @@ class Login extends StatelessWidget {
                     height: 50,
                     child: Center(
                       child: Text(
-                        'Loggin',
+                        'Entrar',
                         style: TextStyle(color: AppTheme.primary, fontSize: 30),
                       ),
                     )),
@@ -142,6 +182,37 @@ class Login extends StatelessWidget {
                     arguments: formValues,
                     (_) => false),
               ),
+
+              const SizedBox(height: 70),
+              Container(
+                width: 300,
+                padding: const EdgeInsets.only(
+                  bottom: 5,
+                ),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color:Colors.white,
+                      width: 1.0 
+                      
+                    )
+                  )
+                ),
+                child: TextButton(
+                  child: const SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'No recuerdo mi contraseña',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )),
+                  onPressed: () => 
+                      recuperarPassword(context)
+                ),
+              ),
+
               const SizedBox(height: 200),
               const Image(
                 image: AssetImage('assets/juntaDeAndalucia.png'),
@@ -149,6 +220,11 @@ class Login extends StatelessWidget {
                 height: 80,
                 fit: BoxFit.cover,
               ),
+
+              const SizedBox(height: 20),
+              const Align(
+                alignment: Alignment.bottomRight,
+                child: Text('v11.3.0', style: TextStyle(color: Colors.white, fontSize: 20))),
             ],
           ),
         ),
