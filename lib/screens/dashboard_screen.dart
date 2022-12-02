@@ -60,7 +60,8 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      body: Column(children: [
+      body: Column(
+        children: [
         const SizedBox(height: 30),
         const Image(
           image: AssetImage('assets/iseneca .png'),
